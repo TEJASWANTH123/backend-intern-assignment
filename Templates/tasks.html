@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Create Task</title>
+</head>
+
+<body>
+    <h1>Create Task</h1>
+
+    <form action="/tasks" method="POST">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea>
+
+        <label for="due_date">Due Date:</label>
+        <input type="date" id="due_date" name="due_date" required>
+
+        <label for="status">Status:</label>
+        <select id="status" name="status" required>
+            <option value="Incomplete">Incomplete</option>
+            <option value="Completed">Completed</option>
+        </select>
+
+        <button type="submit">Create Task</button>
+    </form>
+    <ul>
+        {% for task in tasks %}
+        <li>
+            <p>Title: {{ task.title }}</p>
+            <p>Description: {{ task.description }}</p>
+            <p>Due Date: {{ task.due_date }}</p>
+            <p>Status: {{ task.status }}</p>
+            <form action="/tasks/update/{{ task.id }}" method="POST">
+                <button type="submit">Update</button>
+            </form>
+            <form action="/tasks/delete/{{ task.id }}" method="POST">
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    {% if tasks.has_prev %}
+    <a href="/tasks?page={{ tasks.prev_num }}">Previous</a>
+    {% endif %}
+
+    {% if tasks.has_next %}
+    <a href="/tasks?page={{ tasks.next_num }}">Next</a>
+    {% endif %}
+</body>
+
+</html>
